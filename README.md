@@ -49,16 +49,38 @@ println{ str{ rfact{ 5 } = fact{ 5 } } + '\n' }
 println{ str{ } }
 
 # use Eva ecosystem inside your language
+# to use this feature:
+# root@jedi $ ls /usr/share/ugo/
+# bin lib ...
+# root@jedi $ ls /usr/share/ugo/lib/
+# ... eva_dory.so ...
+# root@jedi $ eva --arch /usr/share/ugo/lib/eva_dory.so
+# dory 0.0.0 - D0 91 07 70 [x64]
+# root@jedi $ ugo [<options>] <your_source_code> -Ieva_dory
+# root@jedi $ ls ./
+# ... <image> ...
+# root@jedi $ eva -e <image> --no-args
+# ...
+# image path: ./
+# image name: <image>
+# ...
+# image path:
+# image name:
+# fatal: no input image
+# (result) 1
+# root@jedi $
+
+& eva # extern eva
 
 path : input{ 'image path: ', str }
 path : path + '/' + input{ 'image name: ', str }
 len : nat
 img : read_from_file{ path, @len }
-eva.init{ }
 eva.load_image{ img, len }
 res : eva.start{ 120 }
+eva.dump{ eva.KER, 'ker.dump' }
 eva.clear{ }
-println{ '[result] ' + str{ res } }
+println{ '(result) ' + str{ res } }
 
 ```
 

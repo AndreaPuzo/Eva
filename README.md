@@ -6,7 +6,7 @@ Welcome to the Eva ecosystem, I'm Andrea and, if you want, I'll take you inside 
 Eva was born with the aim of creating an ecosystem to help those who have the desire to give birth to its own programming language, even just for fun.
 
 Let's imagine we want to generate a language called 'X' with a simple syntax, like the following:
-```
+```c
 # Types:
 # nat -> natural number  (N)
 # int -> integer number  (Z)
@@ -28,7 +28,7 @@ x: input('give me a number: _\b', int)
 s: 'X lang!\n'          # I am a comment
 print(str(x) + ' ' + s) # I am another comment!
 
-if x % 2 = 0
+if x \ 2 = 0
   println('even')
 else
   println('odd')
@@ -87,7 +87,17 @@ Geppo  : Driver{ 100, '#', str of 50 '#' } # error: Driver.age out of range
 DF876XG : Car{ 'Tesla', @Alice }
 DZ781XY : Car{ 'Fiat', @Andrea }
 
-(DF876XG, DZ781XY)
+offset   : 50
+initval  : rand() \ 100 - offset
+finalval : rand() \ 100 - offset
+initval  : min(initval, finalval)
+finalval : max(initval, finalval)
+
+for i in [initval;finalval], i: i + 1
+  if abs(i) = i
+    println(str(i) + ' is positive')
+  else
+    println(str(i) + ' is negative')
 
 ```
 

@@ -5,99 +5,60 @@ Welcome to the Eva ecosystem, I'm Andrea and, if you want, I'll take you inside 
 ### What is the purpose?
 Eva was born with the aim of creating an ecosystem to help those who have the desire to give birth to its own programming language, even just for fun.
 
-Let's imagine we want to generate a language called 'X' with a simple syntax, like the following:
-```c
-# Types:
-# nat -> natural number  (N)
-# int -> integer number  (Z)
-# rat -> rational number (Q)
-# str -> string
+```
+# ugo (language) implemented using Eva ecosystem
+# eva{ 'dory' }
 
-# Builtins
-# input   := { msg: str, type: typ } -> { typ }
-# print   := { msg: str } -> {}
-# println := { msg: str } -> {}
-# nat     := { x: typ } -> { nat }
-# int     := { x: typ } -> { int }
-# rat     := { x: typ } -> { rat }
-# str     := { x: typ } -> { str }
-# abs     := { x: nat|int|rat } -> { x }
-# format  := { fmt: str, args: {} of typ } -> { str }
+println{ 'Welcome to ugo!' }
 
-x: input('give me a number: _\b', int)
-s: 'X lang!\n'          # I am a comment
-print(str(x) + ' ' + s) # I am another comment!
-
-if x \ 2 = 0
-  println('even')
-else
-  println('odd')
-
-fact := { a: nat } -> { b: nat } {
-  if a = 0 or a = 1
-    b: 1
+for , # infinite loop
+  src : input{ '>>> _\b', str }
+  
+  if src = 'quit'
+    break
+  
+  if src.iseq{ 'say', 3 }
+    src : src + 3
+    
+    if src[ 0 ] = ' '
+      src : src + 1
+      println{ src }
+    else
+      println{ 'error: missing argument for \'say\'' }
   else
-    b: a * fact(a - 1)
-}
+    x : nat{ src, @src }
+    if src[ 0 ] = '!' # do factorial
+      println{ str{ x } + '! = ' + str{ fact{ x } } }
+    else
+      println{ 'error: invalid operation' }
 
-x: nat(abs(x))
-y: fact(x)
-println(str(x) + '! = ' + str(y))
-
-doSomething := { a,b: nat, c: rat, d: @str } -> {} {
-  [d]: [d] + str(a + b) + ', ' str(c) '\n' # [<something>] deferences <something>
-}
-
-s: make(str) # create a dynamic string
-doSomething(x, y, 1.0 / 137, @s) # @ means 'address of'
-print(s)
-
-# arrays, typedef, methods
-
-Vec2 := typ {} of 2 rat
-ori: Vec2 { 0,0 }
-
-norm := { v: Vec2 }.{} -> { n: nat } {
-  n: sqrt( v[0] ^ 2 + v[1] ^ 2 )
-}
-
-normalize := { v: @Vec2 }.{} -> {} {
-  a: [v].norm()
-  [v][0]: [v][0] / a
-  [v][1]: [v][1] / a
-}
-
-# structures
-
-Car := typ {
-  model  : 'Fiat'|'Tesla'|'Renault' # enumeration of strings
-  driver : @Driver                  # pointer to a type Driver
-}
-
-Driver := typ {
-  age        : nat in [18;99] # natural in range
-  first_name : str of 5       # constant string
-  last_name  : str            # dynamic string
-}
-
-Alice  : Driver{ 22, 'Alice', 'Wilson' }
-Andrea : Driver{ 19, 'Andrea', 'Puzo' }    # 'Andrea' will be trucated in 'Andre' (str of 5)
-Geppo  : Driver{ 100, '#', str of 50 '#' } # error: Driver.age out of range
-
-DF876XG : Car{ 'Tesla', @Alice }
-DZ781XY : Car{ 'Fiat', @Andrea }
-
-offset   : 50
-initval  : rand() \ 100 - offset
-finalval : rand() \ 100 - offset
-initval  : min(initval, finalval)
-finalval : max(initval, finalval)
-
-for i in [initval;finalval], i: i + 1
-  if abs(i) = i
-    println(str(i) + ' is positive')
+# recursive factorial
+rfact := { x : nat } -> { y : nat }
+  if x = 0 or x = 1
+    ret 1
   else
-    println(str(i) + ' is negative')
+    y : x * rfact{ x - 1 }
+
+# basic factorial
+fact := { x : nat } -> { y : nat }
+  y : 1
+  for i in [1;x], i : i + 1
+    y : y * i
+
+println{ str{ rfact{ 5 } = fact{ 5 } } + '\n' }
+println{ str{ } }
+
+# use Eva ecosystem inside your language
+
+path : input{ 'image path: ', str }
+path : path + '/' + input{ 'image name: ', str }
+len : nat
+img : read_from_file{ path, @len }
+eva.init{ }
+eva.load_image{ img, len }
+res : eva.start{ 120 }
+eva.clear{ }
+println{ '[result] ' + str{ res } }
 
 ```
 

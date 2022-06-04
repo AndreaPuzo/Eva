@@ -80,7 +80,6 @@ const <type> EVA_<IDENTIFIER> = <value>;
 ```c
 // future parameters
 input: i_<identifier>
-constant input: i_<IDENTIFIER>
 output: o_<identifier>
 input/output: io_<identifier>
 ```
